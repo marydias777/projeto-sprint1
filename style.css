@@ -6,15 +6,10 @@
     margin: 100px auto;
 }
 
-/* }
-div.card {
-    background-color: #b9bbf1;
-}
-
 .card-footer {
-    background-color: #0966f2a2;
+    background-color: #f8f9fa;
     padding: 1rem;
-} */
+}
 
 .login-tip {
     border-left: 4px solid #0d6efd;
@@ -73,14 +68,14 @@ div.card {
 
 /* Estilos para a barra de usuário */
 .user-info {
-    background-color: #000; /* Cor preta, como na imagem */
+    background-color:#b9bbf1; /* Cor preta, como na imagem */
     padding: 0.5rem 1rem;
     border-radius: 4px;
     color: #fff; /* Texto branco */
 }
 
 .user-icon i {
-    color: #fff; /* Ícone branco */
+    color: #003b8b; /* Ícone branco */
 }
 
 .welcome-text {
@@ -97,14 +92,14 @@ div.card {
 }
 
 .btn-outline-danger {
-    border-color: #fff; /* Borda branca para o botão Sair */
-    color: #fff; /* Texto branco */
+    border-color:#003b8b; /* Borda branca para o botão Sair */
+    color:#003b8b; /* Texto branco */
 }
 
 .btn-outline-danger:hover {
-    background-color: #fff; /* Fundo branco ao passar o mouse */
-    color: #6a70f8; /* Cor do texto ao hover (vermelho Bootstrap danger) */
-    border-color: #fff;
+    background-color: #003b8b; /* Fundo branco ao passar o mouse */
+    color: #dc3545; /* Cor do texto ao hover (vermelho Bootstrap danger) */
+    border-color: #003b8b;
 }
 
 /* Estilos para cartões de mesma altura */
@@ -112,7 +107,6 @@ div.card {
     display: flex;
     flex-direction: column;
 }
-
 
 .same-height-row .card {
     flex: 1;
@@ -149,3 +143,23 @@ div.card {
         width: 100% !important;
     }
 }
+
+.card-header {
+        background-color: #b9bbf1;
+        color: #fff;
+}
+
+.container {
+    background-color: #003b8b;
+    color: #fff;
+}
+
+.button1 {
+    background-color: #b9bbf1; /* Altera cor de botão de  adicionar imovel */
+}
+
+.button2 {
+    background-color: #b9bbf1;
+}
+
+
