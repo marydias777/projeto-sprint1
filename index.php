@@ -29,7 +29,7 @@
             width: 50vh;
         }
         .login-container {
-            margin-top: 20vh;
+            margin-top: 15vh;
         }
         
         .container {
@@ -80,8 +80,8 @@
                 <div class="login-container">
                     <div style="width: 400px;" class="card-shadow">
                         <!-- Cabeçalho do card de login -->
-                        <div style="background-color: #003b8b;" class="card-header text-white">
-                            <h4 class="mb-0"><i class="bi bi-person-lock me-2"></i>Login</h4>
+                        <div style="background-color: #003b8b; padding: 5px;" class="card-header text-white">
+                            <h4 class="mb-0" style="text-align: center;"><i class="bi bi-person-lock me-2"></i>Login</h4>
                         </div>
                         <!-- Corpo do card de login -->
                         <div class="card-body container " style="background-color: #b9bbf1;">
@@ -91,7 +91,7 @@
                             <form id="loginForm" method="post" action="pagina inicial.html">
                                 <!-- Campo de Usuário -->
                                 <div class="mb-3">
-                                    <label for="username" class="form-label" style="align-content: end;">
+                                    <label for="username" class="form-label" style="align-content: end; width: 350px;">
                                         <i class="bi bi-person me-1"></i>Usuário
                                     </label>
 
@@ -115,15 +115,20 @@
                                  <div class="middle">
                                 <button style="background-color: #003b8b; color: white;" type="submit" class="btn btn ">
                                 <i class="bi bi-box-arrow-in-right me-1" style="color: white;"></i> Entrar
-                                </button>
                             </div>
+                            </button>
+                                <div style="align-items: center; margin-top: 10px; margin-bottom: 0; display: flex; flex-direction: column; justify-content: center;">
+                                <span style="text-align: center;"> Nao tem uma conta?</span>
+                                <span style="text-align: center;"><a href="cadastro.php">Crie</a> uma!</span>
+                                </div>
                             </form>
 
+                            
                         </div>
 
                         <!-- Rodapé do card de login -->
-                        <div class="card-footer text-center" style="background-color: #afb1ec;">copy
-                            <small class="text-muted">Sistema de Aluguel de Imóveis Flexíveis. <span ]
+                        <div class="card-footer text-center" style="background-color: #afb1ec;">©
+                            <small class="text-muted">Sistema de Aluguel de Imóveis Flexíveis. <span
                                 id="ano-atual"> 2025
                             </span></small>
                         </div>

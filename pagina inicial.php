@@ -9,7 +9,7 @@
     <!-- Bootstrap Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
     <!-- Estilos customizados -->
-    <link href="style.css" rel="stylesheet">
+    <!-- <link href="style.css" rel="stylesheet"> -->
 </head>
 <body class="container py-4">
     <div class="container py-4">
@@ -62,7 +62,7 @@
 
                             <div class="mb-3">
                                 <label class="form-label">Acomodações(pessoas)</label>
-                                <input type="text" name=placa" class="form-control">
+                                <input type="text" name="placa" class="form-control">
                             </div>
 
                             <div class="mb-3">
@@ -126,6 +126,7 @@
                                     <th>Tipo de imovel</th>
                                     <th>Acomodações</th>
                                     <th>Endereço</th>
+                                    <th>Ver no mapa</th>
                                     <th>Status</th>
                                     <th>Açoes</th>
                                 </tr>
