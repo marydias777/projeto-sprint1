@@ -73,6 +73,30 @@
 
     <?php 
 
+        session_start();
+
+    use Services/Auth;
+
+    $mensagem = '';
+    $auth = new Auth();
+
+    // se ja estiver logado, redireciona para o index
+    if (auth::verficarLogin()) {
+        header('location:../pagina-inicial.php');
+        exit;
+    }
+
+    if ($_SERVER['REQUEST_METHOD']== 'POST') {
+    $username = $_POST['username'] ?? '';
+    $password = $_POST['password'] ?? '';
+
+        if ($auth->Login($username, $password)) {
+            header('Location: ../pagina-inicial.php')
+        }
+     }
+
+
+
     
 
     ?>
@@ -149,7 +173,23 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     
     <!-- Scripts customizados -->
-    <script src="js/scripts.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Validação do formulário usando Bootstrap
+        (function() {
+            'use strict';
+            const forms = document.querySelectorAll('.needs-validation');
+            Array.from(forms).forEach(form => {
+                form.addEventListener('submit', event => {
+                    if (!form.checkValidity()) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+        })();
+    </script>
 </body>
 </html>
 
