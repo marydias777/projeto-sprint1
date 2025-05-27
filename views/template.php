@@ -162,6 +162,9 @@ use Services\Auth;
                                 <input type="text" name="acomodaçoes" class="form-control" required>
                                 <div class="invalid-feedback">Informe uma quantidade valida.</div>
                             </div>
+
+
+                            <!-- esse nao é de "select", e pra ele ser um labek normal como o de cima -->
                             <div class="mb-3">
                                 <label class="form-label">endereço</label>
                                 <select name="tipo" class="form-select" required>
@@ -185,7 +188,9 @@ use Services\Auth;
                     <div class="card-body">
                         <form method="post" class="needs-validation" novalidate>
                             <div class="mb-3">
-                                <label class="form-label">Tipo de Veículo</label>
+
+                            <!-- esse é pra pegar dos itens da tabela, pergunta pro prof como fazer -->
+                                <label class="form-label">Tipo de Imovel</label>
                                 <select name="tipo_calculo" class="form-select" required>
                                     <option value="Carro">Carro</option>
                                     <option value="Moto">Moto</option>
@@ -214,6 +219,7 @@ use Services\Auth;
                             <table class="table table-striped table-hover">
                                 <thead class="table-dark">
                                     <tr>
+                                        <!-- essa t6abela voce ja fez na pagina inicial, so modifica com as coisas do php  -->
                                         <th>Tipo</th>
                                         <th>Modelo</th>
                                         <th>Placa</th>
@@ -227,7 +233,6 @@ use Services\Auth;
                                     <?php foreach ($locadora->listarVeiculos() as $veiculo): ?>
                                     <tr>
                                         <td>
-                                            <i class="bi bi-<?= $veiculo instanceof \Models\Carro ? 'car-front' : 'bicycle' ?> me-1"></i>
                                             <?= $veiculo instanceof \Models\Carro ? 'Carro' : 'Moto' ?>
                                         </td>
                                         <td><?= htmlspecialchars($veiculo->getModelo()) ?></td>

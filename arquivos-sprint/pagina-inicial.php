@@ -67,6 +67,7 @@
                                 <input type="text" name="placa" class="form-control">
                             </div>
 
+                           
                             <div class="mb-3">
                                 <label class="form-label">Tipo de imovel</label>
                                 <select name="tipo" class="form-select">
