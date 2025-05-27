@@ -2,8 +2,8 @@
 use Services\Auth;
 
 /**
- * Template principal do sistema de locadora de veículos
- * Recebe as variáveis $locadora, $mensagem e $usuario do controller (index.php)
+ * Template principal do sistema de imobiliária
+ * Recebe as variáveis $imobiliaria, $mensagem e $usuario do controller (index.php)
  */
 ?>
 <!DOCTYPE html>
@@ -11,318 +11,427 @@ use Services\Auth;
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistema de Locadora de imoveis</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Bootstrap Icons -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    <title>Sistema de Locação de Imóveis</title>
     <style>
-        .action-wrapper {
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            font-family: Arial, sans-serif;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: #1e3c72;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 8px 8px 0 0;
             display: flex;
+            justify-content: space-between;
             align-items: center;
-            gap: 0.5rem;
-            justify-content: flex-start;
+            margin-bottom: 0;
         }
-        .btn-group-actions {
-            display: flex;
-            gap: 0.5rem;
-            align-items: center;
+
+        .header h1 {
+            font-size: 24px;
+            font-weight: bold;
         }
-        .rent-group {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            order: 2;
-        }
-        .delete-btn {
-            order: 1;
-        }
-        .days-input {
-            width: 60px !important;
-            padding: 0.25rem 0.5rem;
-            text-align: center;
-        }
-        @media (max-width: 768px) {
-            .action-wrapper {
-                flex-direction: column;
-                align-items: stretch;
-            }
-            .btn-group-actions {
-                flex-direction: column;
-            }
-            .rent-group {
-                order: 1;
-                width: 100%;
-            }
-            .delete-btn {
-                order: 2;
-                width: 100%;
-            }
-            .days-input {
-                width: 100% !important;
-            }
-        }
-        /* Estilos para a barra de usuário */
+
         .user-info {
-            background-color: #000; /* Cor preta, como na imagem */
-            padding: 0.5rem 1rem;
-            border-radius: 4px;
-            color: #fff; /* Texto branco */
-        }
-        .user-icon i {
-            color: #fff; /* Ícone branco */
-        }
-        .welcome-text {
-            margin-right: 1rem;
-            font-size: 1rem;
-        }
-        .welcome-text strong {
-            background-color: #fff; /* Fundo branco para o username, como na imagem */
-            color: #000; /* Texto preto */
-            padding: 0.25rem 0.5rem;
-            border-radius: 4px;
-            display: inline-block;
-        }
-        .btn-outline-danger {
-            border-color: #fff; /* Borda branca para o botão Sair */
-            color: #fff; /* Texto branco */
-        }
-        .btn-outline-danger:hover {
-            background-color: #fff; /* Fundo branco ao passar o mouse */
-            color: #dc3545; /* Cor do texto ao hover (vermelho Bootstrap danger) */
-            border-color: #fff;
-        }
-        .same-height-row > [class*='col'] {
             display: flex;
-            flex-direction: column;
+            align-items: center;
+            gap: 15px;
         }
-        .same-height-row .card {
-            flex: 1;
+
+        .user-info span {
+            background: white;
+            color: #1e3c72;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+
+        .btn-sair {
+            background: transparent;
+            color: white;
+            border: 2px solid white;
+            padding: 8px 15px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .btn-sair:hover {
+            background: white;
+            color: #1e3c72;
+        }
+
+        .main-content {
+            background: #e8e9f3;
+            padding: 25px;
+            border-radius: 0 0 8px 8px;
+        }
+
+        .cards-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-header {
+            background: #b8b9dc;
+            color: #333;
+            padding: 15px;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .card-body {
+            padding: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+            background: white;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #1e3c72;
+            box-shadow: 0 0 5px rgba(30, 60, 114, 0.3);
+        }
+
+        .btn-primary {
+            width: 100%;
+            padding: 12px;
+            background: #b8b9dc;
+            color: #333;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .btn-primary:hover {
+            background: #a8a9cc;
+        }
+
+        .table-container {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .table-header {
+            background: #b8b9dc;
+            color: #333;
+            padding: 15px;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .table th {
+            background: #1e3c72;
+            color: white;
+            padding: 12px;
+            text-align: left;
+            font-weight: bold;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .table td {
+            padding: 12px;
+            border-bottom: 1px solid #eee;
+            background: white;
+        }
+
+        .table tr:nth-child(even) td {
+            background: #f8f9fa;
+        }
+
+        .table tr:hover td {
+            background: #e8e9f3;
+        }
+
+        .badge {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .badge.success {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .badge.warning {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .btn-action {
+            padding: 6px 12px;
+            border: none;
+            border-radius: 4px;
+            font-size: 12px;
+            cursor: pointer;
+            margin-right: 5px;
+        }
+
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+        }
+
+        .btn-warning {
+            background: #ffc107;
+            color: #212529;
+        }
+
+        .btn-info {
+            background: #17a2b8;
+            color: white;
+        }
+
+        .btn-success {
+            background: #28a745;
+            color: white;
+        }
+
+        .action-group {
             display: flex;
-            flex-direction: column;
+            align-items: center;
+            gap: 5px;
         }
-        .same-height-row .card-body {
-            flex: 1;
+
+        .days-input {
+            width: 60px;
+            padding: 4px;
+            font-size: 12px;
+        }
+
+        .alert {
+            background: #d1ecf1;
+            color: #0c5460;
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            border: 1px solid #bee5eb;
+        }
+
+        @media (max-width: 768px) {
+            .cards-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .header {
+                flex-direction: column;
+                gap: 10px;
+                text-align: center;
+            }
+            
+            .action-group {
+                flex-direction: column;
+                gap: 5px;
+            }
+            
+            .btn-action {
+                width: 100%;
+                margin-right: 0;
+            }
         }
     </style>
 </head>
-<body class="container py-4">
-    <div class="container py-4">
-        <!-- Barra superior com informações do usuário -->
-        <div class="row mb-4">
-            <div class="col-12">
-                <div class="d-flex justify-content-between align-items-center">
-                    <h1>Sistema de Locadora de Imoveis</h1>
-                    <div class="d-flex align-items-center gap-3 user-info">
-                        <!-- Ícone de usuário usando Bootstrap Icons -->
-                        <span class="user-icon">
-                            <i class="bi bi-person-circle" style="font-size: 24px;"></i>
-                        </span>
-                        <!-- Texto "Bem-vindo, [username]" -->
-                        <span class="welcome-text">Bem-vindo, <strong><?= htmlspecialchars($usuario['username']) ?></strong></span>
-                        <!-- Botão Sair com ícone usando Bootstrap Icons -->
-                        <a href="?logout=1" class="btn btn-outline-danger d-flex align-items-center gap-1">
-                            <i class="bi bi-box-arrow-right"></i>
-                            Sair
-                        </a>
-                    </div>
-                </div>
+<body>
+    <div class="container">
+        <!-- Cabeçalho -->
+        <div class="header">
+            <h1>Sistema de Locação de Imóveis</h1>
+            <div class="user-info">
+                <span>Bem-vindo *<?= htmlspecialchars($usuario['username']) ?>*</span>
+                <a href="?logout=1" class="btn-sair">Sair</a>
             </div>
         </div>
 
-        <?php if ($mensagem): ?>
-        <div class="alert alert-info alert-dismissible fade show" role="alert">
-            <?= htmlspecialchars($mensagem) ?>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-        <?php endif; ?>
-
-        <div class="row same-height-row">
-            <?php if (Auth::temPermissao('adicionar')): ?>
-            <div class="col-md-6">
-                <div class="card h-100">
-                    <div class="card-header">
-                        <h4 class="mb-0"><i class="bi bi-plus-circle me-2"></i>Adicionar Novo Imovel</h4>
-                    </div>
-                    <div class="card-body">
-                        <form method="post" class="needs-validation" novalidate>
-                            <div class="mb-3">
-                                <label class="form-label">Tipo de imovel</label>
-                                <select name="tipo" class="form-select" required>
-                                <option value= "Casa"> Casa </option>
-                                <option value= "Casa"> Apartamento </option>
-                                <option value= "Casa"> Chacara </option>
-                                <option value= "Casa"> Sobrado </option>
-                                <option value= "Casa"> Quitinete </option>
-
-
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Quantidade de acomodaçoes(quartos e banheiros)</label>
-                                <input type="text" name="acomodaçoes" class="form-control" required>
-                                <div class="invalid-feedback">Informe uma quantidade valida.</div>
-                            </div>
-
-
-                            <!-- esse nao é de "select", e pra ele ser um labek normal como o de cima -->
-                            <div class="mb-3">
-                                <label class="form-label">endereço</label>
-                                <select name="tipo" class="form-select" required>
-                                    <option value="Carro">Carro</option>
-                                    <option value="Moto">Moto</option>
-                                </select>
-                            </div>
-                            <button type="submit" name="adicionar" class="btn btn-primary w-100">
-                                <i class="bi bi-plus-lg me-1"></i>Adicionar Veículo
-                            </button>
-                        </form>
-                    </div>
-                </div>
+        <!-- Conteúdo principal -->
+        <div class="main-content">
+            <?php if ($mensagem): ?>
+            <div class="alert">
+                <?= htmlspecialchars($mensagem) ?>
             </div>
             <?php endif; ?>
-            <div class="col-<?= Auth::temPermissao('adicionar') ? 'md-6' : '12' ?>">
-                <div class="card h-100">
-                    <div class="card-header">
-                        <h4 class="mb-0"><i class="bi bi-calculator me-2"></i>Calcular Previsão de Aluguel</h4>
-                    </div>
-                    <div class="card-body">
-                        <form method="post" class="needs-validation" novalidate>
-                            <div class="mb-3">
 
-                            <!-- esse é pra pegar dos itens da tabela, pergunta pro prof como fazer -->
-                                <label class="form-label">Tipo de Imovel</label>
-                                <select name="tipo_calculo" class="form-select" required>
-                                    <option value="Carro">Carro</option>
-                                    <option value="Moto">Moto</option>
+            <!-- Cards de formulários -->
+            <div class="cards-row">
+                <?php if (Auth::temPermissao('adicionar')): ?>
+                <!-- Card Adicionar Imóvel -->
+                <div class="card">
+                    <div class="card-header">Adicionar Imóvel</div>
+                    <div class="card-body">
+                        <form method="post">
+                            <div class="form-group">
+                                <label>Endereço</label>
+                                <input type="text" name="endereco" placeholder="Ex: Rua das Flores, 123" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Acomodações (pessoas)</label>
+                                <input type="text" name="acomodacoes" placeholder="Ex: 4 pessoas" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Tipo de imóvel</label>
+                                <select name="tipo" required>
+                                    <option value="">Selecione...</option>
+                                    <option value="Casa">Casa</option>
+                                    <option value="Apartamento">Apartamento</option>
                                 </select>
                             </div>
-                            <div class="mb-3">
-                                <label class="form-label">Quantidade de Dias</label>
-                                <input type="number" name="dias_calculo" class="form-control" value="1" min="1" required>
+                            <button type="submit" name="adicionar" class="btn-primary">Adicionar</button>
+                        </form>
+                    </div>
+                </div>
+                <?php endif; ?>
+
+                <!-- Card Previsão do Aluguel -->
+                <div class="card">
+                    <div class="card-header">Previsão do Aluguel</div>
+                    <div class="card-body">
+                        <form method="post">
+                            <div class="form-group">
+                                <label>Escolher imóvel</label>
+                                <select name="tipo_calculo" required>
+                                    <option value="">Selecione...</option>
+                                    <option value="Casa">Casa (R$ <?= number_format(DIARIA_CASA, 2, ',', '.') ?>/dia)</option>
+                                    <option value="Apartamento">Apartamento (R$ <?= number_format(DIARIA_APARTAMENTO, 2, ',', '.') ?>/dia)</option>
+                                </select>
                             </div>
-                            <button type="submit" name="calcular" class="btn btn-info w-100">
-                                <i class="bi bi-calculator me-1"></i>Calcular Previsão
-                            </button>
+                            <div class="form-group">
+                                <label>Quantidade de dias</label>
+                                <input type="number" name="dias_calculo" value="1" min="1" required>
+                            </div>
+                            <button type="submit" name="calcular" class="btn-primary">Calcular</button>
                         </form>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="row mt-4">
-            <div class="col-12">
-                <div class="card">
-                    <div class="card-header">
-                        <h4 class="mb-0"><i class="bi bi-list-check me-2"></i>Veículos Cadastrados</h4>
-                    </div>
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-striped table-hover">
-                                <thead class="table-dark">
-                                    <tr>
-                                        <!-- essa t6abela voce ja fez na pagina inicial, so modifica com as coisas do php  -->
-                                        <th>Tipo</th>
-                                        <th>Modelo</th>
-                                        <th>Placa</th>
-                                        <th>Status</th>
-                                        <?php if (Auth::temPermissao('alugar') || Auth::temPermissao('devolver') || Auth::temPermissao('deletar')): ?>
-                                        <th>Ações</th>
-                                        <?php endif; ?>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <?php foreach ($locadora->listarVeiculos() as $veiculo): ?>
-                                    <tr>
-                                        <td>
-                                            <?= $veiculo instanceof \Models\Carro ? 'Carro' : 'Moto' ?>
-                                        </td>
-                                        <td><?= htmlspecialchars($veiculo->getModelo()) ?></td>
-                                        <td><?= htmlspecialchars($veiculo->getPlaca()) ?></td>
-                                        <td>
-                                            <span class="badge bg-<?= $veiculo->isDisponivel() ? 'success' : 'warning' ?>">
-                                                <?php if ($veiculo->isDisponivel()): ?>
-                                                    <i class="bi bi-check-circle me-1"></i>Disponível
-                                                <?php else: ?>
-                                                    <i class="bi bi-exclamation-triangle me-1"></i>Alugado
-                                                <?php endif; ?>
-                                            </span>
-                                        </td>
-                                        <?php if (Auth::temPermissao('alugar') || Auth::temPermissao('devolver') || Auth::temPermissao('deletar')): ?>
-                                        <td>
-                                            <div class="action-wrapper">
-                                                <form method="post" class="btn-group-actions">
-                                                    <input type="hidden" name="modelo" value="<?= htmlspecialchars($veiculo->getModelo()) ?>">
-                                                    <input type="hidden" name="placa" value="<?= htmlspecialchars($veiculo->getPlaca()) ?>">
-                                                    
-                                                    <!-- Botão Deletar (apenas com permissão específica) -->
-                                                    <?php if (Auth::temPermissao('deletar')): ?>
-                                                    <button type="submit" name="deletar" class="btn btn-danger btn-sm delete-btn">
-                                                        <i class="bi bi-trash me-1"></i>Deletar
-                                                    </button>
-                                                    <?php endif; ?>
-                                                    
-                                                    <!-- Botões condicionais baseados no status do veículo e permissões -->
-                                                    <div class="rent-group">
-                                                        <?php if (!$veiculo->isDisponivel()): ?>
-                                                            <?php if (Auth::temPermissao('devolver')): ?>
-                                                            <!-- Veículo alugado: Botão Devolver -->
-                                                            <button type="submit" name="devolver" class="btn btn-warning btn-sm">
-                                                                <i class="bi bi-arrow-return-left me-1"></i>Devolver
-                                                            </button>
-                                                            <?php endif; ?>
-                                                        <?php else: ?>
-                                                            <?php if (Auth::temPermissao('alugar')): ?>
-                                                            <!-- Veículo disponível: Campo de dias e Botão Alugar -->
-                                                            <input type="number" name="dias" class="form-control days-input" value="1" min="1" required>
-                                                            <button type="submit" name="alugar" class="btn btn-primary btn-sm">
-                                                                <i class="bi bi-key me-1"></i>Alugar
-                                                            </button>
-                                                            <?php endif; ?>
-                                                        <?php endif; ?>
-                                                    </div>
-                                                </form>
-                                            </div>
-                                        </td>
-                                        <?php endif; ?>
-                                    </tr>
-                                    <?php endforeach; ?>
-                                    
-                                    <?php if (count($locadora->listarVeiculos()) === 0): ?>
-                                    <tr>
-                                        <td colspan="<?= (Auth::temPermissao('alugar') || Auth::temPermissao('devolver') || Auth::temPermissao('deletar')) ? '5' : '4' ?>" class="text-center py-3">
-                                            <i class="bi bi-exclamation-circle me-2"></i>Nenhum veículo cadastrado.
-                                        </td>
-                                    </tr>
-                                    <?php endif; ?>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
+
+            <!-- Tabela de imóveis -->
+            <div class="table-container">
+                <div class="table-header">Lista de imóveis</div>
+                <div style="overflow-x: auto;">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Tipo de imóvel</th>
+                                <th>Acomodações</th>
+                                <th>Endereço</th>
+                                <th>Ver no mapa</th>
+                                <th>Status</th>
+                                <?php if (Auth::temPermissao('alugar') || Auth::temPermissao('devolver') || Auth::temPermissao('deletar')): ?>
+                                <th>Ações</th>
+                                <?php endif; ?>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($imobiliaria->listarImoveis() as $imovel): ?>
+                            <tr>
+                                <td><?= htmlspecialchars($imovel->getTipo()) ?></td>
+                                <td><?= htmlspecialchars($imovel->getAcomodacoes()) ?></td>
+                                <td><?= htmlspecialchars($imovel->getEndereco()) ?></td>
+                                <td>
+                                    <a href="https://www.google.com/maps/dir/SENAI+Santo+André/@-23.6662511,-46.5213753,17z/<?= urlencode(htmlspecialchars($imovel->getEndereco())) ?>" target="_blank" style="color: #87CEEB; text-decoration: underline;">
+                                        Ver no mapa
+                                    </a>
+                                </td>
+                                <td>
+                                    <span class="badge <?= $imovel->isDisponivel() ? 'success' : 'warning' ?>">
+                                        <?= $imovel->isDisponivel() ? 'Disponível' : 'Alugado' ?>
+                                    </span>
+                                </td>
+                                <?php if (Auth::temPermissao('alugar') || Auth::temPermissao('devolver') || Auth::temPermissao('deletar')): ?>
+                                <td>
+                                    <form method="post" style="display: inline-block;">
+                                        <input type="hidden" name="endereco" value="<?= htmlspecialchars($imovel->getEndereco()) ?>">
+                                        <div class="action-group">
+                                            <?php if (Auth::temPermissao('deletar')): ?>
+                                            <button type="submit" name="deletar" class="btn-action btn-danger" onclick="return confirm('Tem certeza?')">
+                                                Deletar
+                                            </button>
+                                            <?php endif; ?>
+                                            
+                                            <?php if (!$imovel->isDisponivel() && Auth::temPermissao('devolver')): ?>
+                                                <button type="submit" name="devolver" class="btn-action btn-warning">
+                                                    Devolver
+                                                </button>
+                                            <?php elseif ($imovel->isDisponivel() && Auth::temPermissao('alugar')): ?>
+                                                <input type="number" name="dias" class="days-input" value="1" min="1" required>
+                                                <button type="submit" name="alugar" class="btn-action btn-success">
+                                                    Alugar
+                                                </button>
+                                            <?php endif; ?>
+                                        </div>
+                                    </form>
+                                </td>
+                                <?php endif; ?>
+                            </tr>
+                            <?php endforeach; ?>
+                            
+                            <?php if (count($imobiliaria->listarImoveis()) === 0): ?>
+                            <tr>
+                                <td colspan="<?= (Auth::temPermissao('alugar') || Auth::temPermissao('devolver') || Auth::temPermissao('deletar')) ? '6' : '5' ?>" style="text-align: center; padding: 20px; color: #666;">
+                                    Nenhum imóvel cadastrado.
+                                </td>
+                            </tr>
+                            <?php endif; ?>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
-        
-        <footer class="mt-5 text-center text-muted">
-            <hr>
-            <p>Sistema de Locadora de Veículos &copy; <?= date('Y') ?> - Utilizando MySQL para persistência de dados</p>
-        </footer>
     </div>
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        // Validação do formulário usando Bootstrap
-        (function() {
-            'use strict';
-            const forms = document.querySelectorAll('.needs-validation');
-            Array.from(forms).forEach(form => {
-                form.addEventListener('submit', event => {
-                    if (!form.checkValidity()) {
-                        event.preventDefault();
-                        event.stopPropagation();
-                    }
-                    form.classList.add('was-validated');
-                }, false);
-            });
-        })();
-    </script>
 </body>
 </html>

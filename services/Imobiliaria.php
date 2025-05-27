@@ -1,11 +1,11 @@
 <?php
 namespace Services;
-use Models\{imovel, Casa, Apartamento};
+use Models\{Imovel, Casa, Apartamento};
 
 /**
- * Classe responsável por gerenciar as operações da locadora
+ * Classe responsável por gerenciar as operações da imobiliária
  */
-class imobiliaria {
+class Imobiliaria {
     /**
      * Conexão com o banco de dados
      * @var \PDO
@@ -13,13 +13,13 @@ class imobiliaria {
     private \PDO $db;
     
     /**
-     * Lista de veículos carregados
+     * Lista de imóveis carregados
      * @var array
      */
-    private array $imoveis= [];
+    private array $imoveis = [];
 
     /**
-     * Construtor da classe Locadora
+     * Construtor da classe Imobiliaria
      */
     public function __construct() {
         $this->db = getConnection();
@@ -27,7 +27,7 @@ class imobiliaria {
     }
 
     /**
-     * Carrega os veículos do banco de dados
+     * Carrega os imóveis do banco de dados
      */
     private function carregarImoveis(): void {
         $stmt = $this->db->query("SELECT * FROM imoveis");
@@ -36,17 +36,19 @@ class imobiliaria {
         $this->imoveis = []; // Limpa a lista antes de carregar
         
         foreach ($imoveisDb as $dado) {
-            if ($dado['tipo'] === 'casa') {
+            if ($dado['tipo'] === 'Casa') {
                 $imovel = new Casa(
-                    $dado['modelo'], 
-                    $dado['placa'], 
+                    $dado['endereco'], 
+                    $dado['tipo'],
+                    $dado['acomodacoes'], 
                     (bool)$dado['disponivel'],
                     $dado['id']
                 );
             } else {
                 $imovel = new Apartamento(
-                    $dado['modelo'], 
-                    $dado['placa'], 
+                    $dado['endereco'], 
+                    $dado['tipo'],
+                    $dado['acomodacoes'], 
                     (bool)$dado['disponivel'],
                     $dado['id']
                 );
@@ -56,24 +58,24 @@ class imobiliaria {
     }
 
     /**
-     * Adiciona um novo veículo à locadora
+     * Adiciona um novo imóvel à imobiliária
      * 
-     * @param imovel $imovel Veículo a ser adicionado
+     * @param Imovel $imovel Imóvel a ser adicionado
      * @return bool Resultado da operação
      */
-    public function adicionarimovel(imovel $imovel): bool {
+    public function adicionarImovel(Imovel $imovel): bool {
         $tipo = ($imovel instanceof Casa) ? 'Casa' : 'Apartamento';
         
         try {
             $stmt = $this->db->prepare("
-                INSERT INTO imoveis (tipo, modelo, placa, disponivel) 
+                INSERT INTO imoveis (tipo, endereco, acomodacoes, disponivel) 
                 VALUES (?, ?, ?, ?)
             ");
             
             $result = $stmt->execute([
                 $tipo,
-                $imovel->getEndereço(),
-                $imovel->getAcomodaçoes(),
+                $imovel->getEndereco(),
+                $imovel->getAcomodacoes(),
                 $imovel->isDisponivel() ? 1 : 0
             ]);
             
@@ -85,23 +87,22 @@ class imobiliaria {
             
             return $result;
         } catch (\PDOException $e) {
-            // Em caso de erro, como placa duplicada
+            // Em caso de erro, como dados duplicados
             return false;
         }
     }
 
     /**
-     * Remove um veículo da locadora
+     * Remove um imóvel da imobiliária
      * 
-     * @param string $modelo Modelo do veículo
-     * @param string $placa Placa do veículo
+     * @param string $endereco Endereço do imóvel
      * @return string Mensagem de resultado da operação
      */
-    public function deletarimovel(string $modelo, string $placa): string {
-        // Primeiro encontra o veículo na memória para ter o ID
+    public function deletarImovel(string $endereco): string {
+        // Primeiro encontra o imóvel na memória para ter o ID
         $id = null;
         foreach ($this->imoveis as $key => $imovel) {
-            if ($imovel->getModelo() === $modelo && $imovel->getPlaca() === $placa) {
+            if ($imovel->getEndereco() === $endereco) {
                 $id = $imovel->getId();
                 unset($this->imoveis[$key]);
                 $this->imoveis = array_values($this->imoveis); // Reindexar array
@@ -112,24 +113,24 @@ class imobiliaria {
         if ($id !== null) {
             $stmt = $this->db->prepare("DELETE FROM imoveis WHERE id = ?");
             if ($stmt->execute([$id])) {
-                return "Veículo '{$modelo}' removido com sucesso!";
+                return "Imóvel '{$endereco}' removido com sucesso!";
             }
-            return "Erro ao remover veículo do banco de dados.";
+            return "Erro ao remover imóvel do banco de dados.";
         }
         
-        return "Veículo não encontrado.";
+        return "Imóvel não encontrado.";
     }
 
     /**
-     * Aluga um veículo por um número específico de dias
+     * Aluga um imóvel por um número específico de dias
      * 
-     * @param string $modelo Modelo do veículo
+     * @param string $endereco Endereço do imóvel
      * @param int $dias Quantidade de dias do aluguel
      * @return string Mensagem de resultado da operação
      */
-    public function alugarimovel(string $modelo, int $dias = 1): string {
+    public function alugarImovel(string $endereco, int $dias = 1): string {
         foreach ($this->imoveis as $imovel) {
-            if ($imovel->getModelo() === $modelo && $imovel->isDisponivel()) {
+            if ($imovel->getEndereco() === $endereco && $imovel->isDisponivel()) {
                 $valorAluguel = $imovel->calcularAluguel($dias);
                 $mensagem = $imovel->alugar();
                 
@@ -142,18 +143,18 @@ class imobiliaria {
                 return $mensagem . " Valor do aluguel: R$ " . number_format($valorAluguel, 2, ',', '.');
             }
         }
-        return "Veículo não disponível.";
+        return "Imóvel não disponível.";
     }
 
     /**
-     * Devolve um veículo alugado
+     * Devolve um imóvel alugado
      * 
-     * @param string $modelo Modelo do veículo
+     * @param string $endereco Endereço do imóvel
      * @return string Mensagem de resultado da operação
      */
-    public function devolverimovel(string $modelo): string {
+    public function devolverImovel(string $endereco): string {
         foreach ($this->imoveis as $imovel) {
-            if ($imovel->getModelo() === $modelo && !$imovel->isDisponivel()) {
+            if ($imovel->getEndereco() === $endereco && !$imovel->isDisponivel()) {
                 $mensagem = $imovel->devolver();
                 
                 // Atualiza no banco de dados
@@ -165,29 +166,29 @@ class imobiliaria {
                 return $mensagem;
             }
         }
-        return "Veículo não encontrado ou já está disponível.";
+        return "Imóvel não encontrado ou já está disponível.";
     }
 
     /**
-     * Retorna a lista de todos os veículos
+     * Retorna a lista de todos os imóveis
      * 
-     * @return array Lista de veículos
+     * @return array Lista de imóveis
      */
-    public function listarimoveis(): array {
+    public function listarImoveis(): array {
         return $this->imoveis;
     }
 
     /**
      * Calcula uma previsão de valor do aluguel
      * 
-     * @param string $tipo Tipo do veículo (casa ou apartamento)
+     * @param string $tipo Tipo do imóvel (Casa ou Apartamento)
      * @param int $dias Quantidade de dias
      * @return float Valor previsto do aluguel
      */
     public function calcularPrevisaoAluguel(string $tipo, int $dias): float {
-        if ($tipo === 'casa') {
-            return (new casa('', '', ''))->calcularAluguel($dias);
+        if ($tipo === 'Casa') {
+            return (new Casa('', '', ''))->calcularAluguel($dias);
         }
-        return (new apartamento('', '', ''))->calcularAluguel($dias);
+        return (new Apartamento('', '', ''))->calcularAluguel($dias);
     }
 }

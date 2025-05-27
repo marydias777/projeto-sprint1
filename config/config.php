@@ -5,7 +5,7 @@
 define('DB_HOST', 'localhost');
 define('DB_USER', 'root');         // Altere para seu usuário do MySQL
 define('DB_PASS', 'Senai@118');    // Altere para sua senha do MySQL
-define('DB_NAME', 'locadora_db');  // Nome do banco de dados
+define('DB_NAME', 'imobiliaria');  // Nome do banco de dados
 
 // Constantes de diárias
 define('DIARIA_CASA', 100.00);
@@ -63,12 +63,12 @@ function initDatabase() {
             perfil VARCHAR(20) NOT NULL
         ) ENGINE=InnoDB");
         
-        // Cria a tabela de veículos se não existir
-        $pdo->exec("CREATE TABLE IF NOT EXISTS veiculos (
+        // Cria a tabela de imóveis se não existir (corrigida)
+        $pdo->exec("CREATE TABLE IF NOT EXISTS imoveis (
             id INT AUTO_INCREMENT PRIMARY KEY,
-            tipo VARCHAR(10) NOT NULL,
-            modelo VARCHAR(100) NOT NULL,
-            placa VARCHAR(10) NOT NULL UNIQUE,
+            tipo VARCHAR(20) NOT NULL,
+            endereco VARCHAR(200) NOT NULL,
+            acomodacoes VARCHAR(50) NOT NULL,
             disponivel BOOLEAN NOT NULL DEFAULT TRUE
         ) ENGINE=InnoDB");
         
@@ -91,32 +91,19 @@ function initDatabase() {
                     'admin', $admin_hash, 'admin',
                     'usuario', $user_hash, 'usuario'
                 ]);
-            
-            // Também insere em uma tabela temporária para verificação
-            // Esta tabela serve apenas para depuração e pode ser removida em produção
-            $pdo->exec("CREATE TABLE IF NOT EXISTS senha_debug (
-                username VARCHAR(50) NOT NULL,
-                senha_texto VARCHAR(50) NOT NULL,
-                hash VARCHAR(255) NOT NULL
-            )");
-            
-            $pdo->prepare("INSERT INTO senha_debug (username, senha_texto, hash) VALUES 
-                (?, ?, ?), (?, ?, ?)")
-                ->execute([
-                    'admin', ADMIN_PASSWORD, $admin_hash,
-                    'usuario', USER_PASSWORD, $user_hash
-                ]);
         }
         
-        // Verifica se existem veículos cadastrados
-        $stmt = $pdo->query("SELECT COUNT(*) FROM veiculos");
+        // Verifica se existem imóveis cadastrados
+        $stmt = $pdo->query("SELECT COUNT(*) FROM imoveis");
         $count = $stmt->fetchColumn();
         
-        // ARRUMAR!!
+        // Se não existirem imóveis, insere alguns exemplos
         if ($count == 0) {
-            $pdo->exec("INSERT INTO veiculos (tipo, modelo, placa, disponivel) VALUES 
-                ('Carro', 'Sandero', 'FMA-6680', FALSE),
-                ('Moto', 'Ninja', 'FMA-6600', TRUE)");
+            $pdo->exec("INSERT INTO imoveis (tipo, endereco, acomodacoes, disponivel) VALUES 
+                ('Casa', 'Rua das Flores, 123 - Centro, São Paulo - SP', '4 pessoas', FALSE),
+                ('Apartamento', 'Av. Paulista, 1000 - Bela Vista, São Paulo - SP', '2 pessoas', TRUE),
+                ('Casa', 'Rua da Paz, 456 - Vila Madalena, São Paulo - SP', '6 pessoas', TRUE),
+                ('Apartamento', 'Rua Augusta, 789 - Consolação, São Paulo - SP', '3 pessoas', TRUE)");
         }
         
     } catch (PDOException $e) {

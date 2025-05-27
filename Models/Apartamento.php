@@ -2,12 +2,12 @@
 namespace Models;
 
 /**
- * Classe que representa uma apartamento no sistema
- * Implementa a interface Locavel definida em imovel.php
+ * Classe que representa um Apartamento no sistema
+ * Implementa a interface Locavel definida em Imovel.php
  */
-class apartamento extends imovel implements Locavel {
+class Apartamento extends Imovel implements Locavel {
     /**
-     * Calcula o valor do aluguel para a apartamento
+     * Calcula o valor do aluguel para o Apartamento
      * 
      * @param int $dias Quantidade de dias de aluguel
      * @return float Valor total do aluguel
@@ -17,28 +17,28 @@ class apartamento extends imovel implements Locavel {
     }
 
     /**
-     * Método para alugar a apartamento
+     * Método para alugar o Apartamento
      * 
      * @return string Mensagem de resultado da operação
      */
     public function alugar(): string {
         if ($this->disponivel) {
             $this->disponivel = false;
-            return "apartamento '{$this->endereço}' alugada com sucesso!";
+            return "Apartamento '{$this->endereco}' alugado com sucesso!";
         }
-        return "apartamento '{$this->endereço}' não está disponível.";
+        return "Apartamento '{$this->endereco}' não está disponível.";
     }
 
     /**
-     * Método para devolver a apartamento à imobiliaria
+     * Método para devolver o Apartamento à imobiliária
      * 
      * @return string Mensagem de resultado da operação
      */
     public function devolver(): string {
         if (!$this->disponivel) {
             $this->disponivel = true;
-            return "apartamento '{$this->endereço}' devolvida com sucesso!";
+            return "Apartamento '{$this->endereco}' devolvido com sucesso!";
         }
-        return "apartamento '{$this->endereço}' já está na imobiliaria.";
+        return "Apartamento '{$this->endereco}' já está na imobiliária.";
     }
 }
