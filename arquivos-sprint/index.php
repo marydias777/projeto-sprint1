@@ -40,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         // cria o imovel (mantem a compatibilidade com as classes existentes)
 
-        $imovel = ($tipo == 'Casa') ? new Casa($endereço, $acomodaçoes) : new Apartamento($endereço, $acomodaçoes);
+        $imovel = ($tipo == 'Casa') ? new Casa($tipo, $endereço, $acomodaçoes) : new Apartamento( $tipo, $endereço, $acomodaçoes);
         if ($locadora->adicionarimovel($imovel)) {
             $mensagem = "imovel adicionado com sucesso!";
         } else {

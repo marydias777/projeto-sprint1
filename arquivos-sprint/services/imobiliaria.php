@@ -186,8 +186,8 @@ class imobiliaria {
      */
     public function calcularPrevisaoAluguel(string $tipo, int $dias): float {
         if ($tipo === 'casa') {
-            return (new casa('', ''))->calcularAluguel($dias);
+            return (new casa('', '', ''))->calcularAluguel($dias);
         }
-        return (new apartamento('', ''))->calcularAluguel($dias);
+        return (new apartamento('', '', ''))->calcularAluguel($dias);
     }
 }

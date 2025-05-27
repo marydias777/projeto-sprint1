@@ -29,7 +29,7 @@ abstract class Imovel {
      * @param bool $disponivel Status de disponibilidade
      * @param int|null $id ID no banco de dados (opcional)
      */
-    public function __construct(string $endereço, string $acomodaçoes, bool $disponivel = true, ?int $id = null) {
+    public function __construct(string $endereço, string $tipo, string $acomodaçoes, bool $disponivel = true, ?int $id = null) {
         $this->tipo = $tipo;
         $this->endereço = $endereço;
         $this->acomodaçoes = $acomodaçoes;
