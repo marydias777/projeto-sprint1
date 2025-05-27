@@ -116,7 +116,7 @@
             </div>
         </div>
 
-     <!-- tabela de veiculos -->
+     <!-- tabela de imoveis -->
      <div class="row mt-4">
         <div class="col-12">
             <div class="card">
@@ -136,6 +136,11 @@
                                     <th>Açoes</th>
                                 </tr>
                             </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        
                             <tbody>
                              
 
