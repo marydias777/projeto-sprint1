@@ -8,8 +8,8 @@ define('DB_PASS', 'Senai@118');    // Altere para sua senha do MySQL
 define('DB_NAME', 'locadora_db');  // Nome do banco de dados
 
 // Constantes de diárias
-define('DIARIA_CARRO', 100.00);
-define('DIARIA_MOTO', 50.00);
+define('DIARIA_CASA', 100.00);
+define('DIARIA_APARTAMENTO', 50.00);
 
 // Definir senhas padrão para facilitar debug - use apenas em desenvolvimento
 define('ADMIN_PASSWORD', 'admin123');
@@ -112,7 +112,7 @@ function initDatabase() {
         $stmt = $pdo->query("SELECT COUNT(*) FROM veiculos");
         $count = $stmt->fetchColumn();
         
-        // Se não existirem veículos, insere os padrões
+        // ARRUMAR!!
         if ($count == 0) {
             $pdo->exec("INSERT INTO veiculos (tipo, modelo, placa, disponivel) VALUES 
                 ('Carro', 'Sandero', 'FMA-6680', FALSE),

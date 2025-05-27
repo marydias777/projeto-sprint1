@@ -4,8 +4,8 @@ require_once __DIR__ . '/config/config.php';
 
 session_start();
 
-use Services\{Locadora, Auth};
-use Models\{Carro, Moto};
+use Services\{ Auth, imobiliaria};
+use Models\{Casa, Apartamento};
 
 // Verificar se está logado
 if (!Auth::verificarLogin()) {
@@ -20,8 +20,8 @@ if (isset($_GET['logout'])) {
     exit;
 }
 
-// Instancia a Locadora
-$locadora = new Locadora();
+// Instancia a imobiliaria
+$imobiliaria = new imobiliaria();
 $mensagem = '';
 $usuario = Auth::getUsuario();
 
@@ -33,38 +33,42 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             goto renderizar;
         }
         
-        $modelo = $_POST['modelo'];
-        $placa = $_POST['placa'];
+        $endereço = $_POST['endereço'];
+        $acomodaçoes = $_POST['acomodaçoes'];
         $tipo = $_POST['tipo'];
 
-        $veiculo = ($tipo == 'Carro') ? new Carro($modelo, $placa) : new Moto($modelo, $placa);
-        if ($locadora->adicionarVeiculo($veiculo)) {
-            $mensagem = "Veículo adicionado com sucesso!";
+
+        // cria o imovel (mantem a compatibilidade com as classes existentes)
+
+        $imovel = ($tipo == 'Casa') ? new Casa($endereço, $acomodaçoes) : new Apartamento($endereço, $acomodaçoes);
+        if ($locadora->adicionarimovel($imovel)) {
+            $mensagem = "imovel adicionado com sucesso!";
         } else {
-            $mensagem = "Erro ao adicionar veículo. Verifique se a placa é única.";
+            $mensagem = "Erro ao adicionar imovel Verifique se as informaçoes sao únicas.";
         }
+
     } elseif (isset($_POST['alugar'])) {
         if (!Auth::temPermissao('alugar')) {
-            $mensagem = "Você não tem permissão para alugar veículos.";
+            $mensagem = "Você não tem permissão para alugar imoveis.";
             goto renderizar;
         }
         
         $dias = isset($_POST['dias']) ? (int)$_POST['dias'] : 1;
-        $mensagem = $locadora->alugarVeiculo($_POST['modelo'], $dias);
+        $mensagem = $imobiliaria->alugarImovel($_POST[''], $dias);
     } elseif (isset($_POST['devolver'])) {
         if (!Auth::temPermissao('devolver')) {
             $mensagem = "Você não tem permissão para devolver veículos.";
             goto renderizar;
         }
         
-        $mensagem = $locadora->devolverVeiculo($_POST['modelo']);
+        $mensagem = $locadora->devolverimovel($_POST['modelo']);
     } elseif (isset($_POST['deletar'])) {
         if (!Auth::temPermissao('deletar')) {
             $mensagem = "Você não tem permissão para deletar veículos.";
             goto renderizar;
         }
         
-        $mensagem = $locadora->deletarVeiculo($_POST['modelo'], $_POST['placa']);
+        $mensagem = $locadora->deletarimovel($_POST['modelo'], $_POST['placa']);
     } elseif (isset($_POST['calcular'])) {
         if (!Auth::temPermissao('calcular')) {
             $mensagem = "Você não tem permissão para calcular previsões.";
@@ -74,8 +78,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $dias = (int)$_POST['dias_calculo'];
         $tipo = $_POST['tipo_calculo'];
         $valor = $locadora->calcularPrevisaoAluguel($tipo, $dias);
+        $tipoNome = ($tipo == 'Casa') ? 'Casa' : 'Apartamento';
         $mensagem = "Previsão de valor para {$dias} dias: R$ " . number_format($valor, 2, ',', '.');
-    };
+    }
 }
 
 renderizar:
