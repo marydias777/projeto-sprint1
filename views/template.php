@@ -173,7 +173,7 @@ use Services\Auth;
                                 </select>
                             </div>
                             <button type="submit" name="adicionar" class="btn btn-primary w-100">
-                                <i class="bi bi-plus-lg me-1"></i>Adicionar Veículo
+                                <i class="bi bi-plus-lg me-1"></i>Adicionar Imovel
                             </button>
                         </form>
                     </div>
@@ -220,14 +220,15 @@ use Services\Auth;
                                 <thead class="table-dark">
                                     <tr>
                                         <!-- essa t6abela voce ja fez na pagina inicial, so modifica com as coisas do php  -->
-                                        <th>Tipo</th>
-                                        <th>Modelo</th>
-                                        <th>Placa</th>
+                                        <th>Tipo de imovel</th>
+                                        <th>Acomodações(quartos)</th>
+                                        <th>Endereço</th>
+                                        <th>Ver no mapa</th>
                                         <th>Status</th>
                                         <?php if (Auth::temPermissao('alugar') || Auth::temPermissao('devolver') || Auth::temPermissao('deletar')): ?>
                                         <th>Ações</th>
                                         <?php endif; ?>
-                                    </tr>
+                                    </tr
                                 </thead>
                                 <tbody>
                                     <?php foreach ($locadora->listarVeiculos() as $veiculo): ?>
@@ -303,7 +304,7 @@ use Services\Auth;
         
         <footer class="mt-5 text-center text-muted">
             <hr>
-            <p>Sistema de Locadora de Veículos &copy; <?= date('Y') ?> - Utilizando MySQL para persistência de dados</p>
+            <p>Sistema de Locadora de Imoveis &copy; <?= date('Y') ?> - Utilizando MySQL para persistência de dados</p>
         </footer>
     </div>
     <!-- Bootstrap JS -->
