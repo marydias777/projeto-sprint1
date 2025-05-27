@@ -192,7 +192,7 @@ use Services\Auth;
                             <!-- esse é pra pegar dos itens da tabela, pergunta pro prof como fazer -->
                                 <label class="form-label">Tipo de Imovel</label>
                                 <select name="tipo_calculo" class="form-select" required>
-                                    <option value="Carro">Carro</option>
+                                    <option value="Carro">Imovel</option>
                                     <option value="Moto">Moto</option>
                                 </select>
                             </div>
