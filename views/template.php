@@ -11,7 +11,7 @@ use Services\Auth;
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistema de Locadora de Veículos</title>
+    <title>Sistema de Locadora de imoveis</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Bootstrap Icons -->
@@ -112,7 +112,7 @@ use Services\Auth;
         <div class="row mb-4">
             <div class="col-12">
                 <div class="d-flex justify-content-between align-items-center">
-                    <h1>Sistema de Locadora de Veículos</h1>
+                    <h1>Sistema de Locadora de Imoveis</h1>
                     <div class="d-flex align-items-center gap-3 user-info">
                         <!-- Ícone de usuário usando Bootstrap Icons -->
                         <span class="user-icon">
@@ -142,22 +142,28 @@ use Services\Auth;
             <div class="col-md-6">
                 <div class="card h-100">
                     <div class="card-header">
-                        <h4 class="mb-0"><i class="bi bi-plus-circle me-2"></i>Adicionar Novo Veículo</h4>
+                        <h4 class="mb-0"><i class="bi bi-plus-circle me-2"></i>Adicionar Novo Imovel</h4>
                     </div>
                     <div class="card-body">
                         <form method="post" class="needs-validation" novalidate>
                             <div class="mb-3">
-                                <label class="form-label">Modelo</label>
-                                <input type="text" name="modelo" class="form-control" required>
-                                <div class="invalid-feedback">Informe um modelo válido.</div>
+                                <label class="form-label">Tipo de imovel</label>
+                                <select name="tipo" class="form-select" required>
+                                <option value= "Casa"> Casa </option>
+                                <option value= "Casa"> Apartamento </option>
+                                <option value= "Casa"> Chacara </option>
+                                <option value= "Casa"> Sobrado </option>
+                                <option value= "Casa"> Quitinete </option>
+
+
                             </div>
                             <div class="mb-3">
-                                <label class="form-label">Placa</label>
-                                <input type="text" name="placa" class="form-control" required>
-                                <div class="invalid-feedback">Informe uma placa válida.</div>
+                                <label class="form-label">Quantidade de acomodaçoes(quartos e banheiros)</label>
+                                <input type="text" name="acomodaçoes" class="form-control" required>
+                                <div class="invalid-feedback">Informe uma quantidade valida.</div>
                             </div>
                             <div class="mb-3">
-                                <label class="form-label">Tipo</label>
+                                <label class="form-label">endereço</label>
                                 <select name="tipo" class="form-select" required>
                                     <option value="Carro">Carro</option>
                                     <option value="Moto">Moto</option>

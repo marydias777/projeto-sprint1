@@ -21,12 +21,12 @@
                     <h1> Sistema de locação de Imoveis</h1>
                     <div class="d-flex align-items-center gap-3 user-info">
 
-                        <!-- icuone de usuario usando boostrap icons -->
+                        <!-- icone de usuario usando boostrap icons -->
                          <span class="user-icon">
                             <i class="bi bi-person-circle" style="font-size: 24px;"></i>
                          </span>
                          <!-- texto "bem vindo" [username] -->
-                          <span class="welcome-text">Bem vindo, <strong id="username-display">Admin</strong></span>
+                          <span class="welcome-text">Bem vindo, <strong id="username-display"> <?= htmlspecialchars($usuario['username'])?></strong></span>
 
                         <!-- botao para sair com icone usando boostrap icons -->
                          <a href="index.html" class="btn btn-outline-danger d-flex align-items-center gap-1">
@@ -39,10 +39,12 @@
             </div>
          </div>
          <!-- Mensagem de alerta (oculta por pradrao) -->
-          <div id="sistema-mensagem" class="alert alert-info alert-dismissible fade show d-none" role="alert">
-            <span id="mensagem-texto">Mensagem do sistema aparecera aqui</span>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" arial-label="close"></button>
-          </div>
+        <?php if ($mensagem): ?>
+        <div class="alert alert-info alert-dismissible fade show" role="alert">
+            <?= htmlspecialchars($mensagem) ?>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        <?php endif; ?>
 
           <!-- linha para formularios (adicionar veiculo e calcular previsao) -->
            <div class="row same-height-row">
@@ -99,6 +101,8 @@
                             <div class="mb-3">
                                 <label class="form-label">Quantidade de Dias</label>
                                 <input type="number" name="dias_calculo" class="form-control" value="1" min="1">
+
+                                
                             </div>
                             <div class="button2">
                             <button class="btn w-100" type="submit" name="calcular">
@@ -124,7 +128,7 @@
                             <thead class="table-dark">
                                 <tr>
                                     <th>Tipo de imovel</th>
-                                    <th>Acomodações</th>
+                                    <th>Acomodações(quartos)</th>
                                     <th>Endereço</th>
                                     <th>Ver no mapa</th>
                                     <th>Status</th>
