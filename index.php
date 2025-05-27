@@ -70,6 +70,14 @@
             background-color: #45a049;
         }
     </style>
+
+    <?php 
+
+    
+
+    ?>
+
+
 </head>
 <body>
     <div class="container">
@@ -88,11 +96,11 @@
                             <!-- Espaço para mensagem de erro (vazio por padrão) -->
                             <div id="errorMessage" class="alert alert-danger d-none"> Mensagem de erro aparecerá aqui.</div>
                             <!-- Formulário de login -->
-                            <form id="loginForm" method="post" action="pagina inicial.html">
+                            <form id="loginForm" method="post" action="pagina inicial.php">
                                 <!-- Campo de Usuário -->
                                 <div class="mb-3">
                                     <label for="username" class="form-label" style="align-content: end; width: 350px;">
-                                        <i class="bi bi-person me-1"></i>Usuário
+                                        <i class="bi bi-person me-1"></i>Usuário/email
                                     </label>
 
                                     <div class="middle">
