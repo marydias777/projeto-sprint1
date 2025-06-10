@@ -54,8 +54,8 @@ use Services\Auth;
         }
 
         .user-info span {
-            background: white;
-            color: #1e3c72;
+            background: #b8b9dc;
+            color: white;
             padding: 5px 10px;
             border-radius: 4px;
             font-weight: bold;
