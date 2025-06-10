@@ -41,7 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
 
         body {
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            background: linear-gradient(135deg, white,white);
             font-family: Arial, sans-serif;
             min-height: 100vh;
             display: flex;
@@ -67,7 +67,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
 
         .login-body {
-            background: #e8e9f3;
+            background: #b9bbf1;
             padding: 25px;
         }
 

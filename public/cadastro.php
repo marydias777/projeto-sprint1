@@ -45,7 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
 
         body {
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            background: linear-gradient(135deg, white, white);
             font-family: Arial, sans-serif;
             min-height: 100vh;
             display: flex;
@@ -71,7 +71,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
 
         .cadastro-body {
-            background: #e8e9f3;
+            background: #003b8b;
             padding: 25px;
         }
 
@@ -82,7 +82,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         .form-group label {
             display: block;
             margin-bottom: 5px;
-            color: #333;
+            color: white;
             font-weight: 500;
         }
 
@@ -121,12 +121,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         .cadastro-footer {
             text-align: center;
             margin-top: 20px;
-            color: #666;
+            color: white;
             font-size: 14px;
         }
 
         .cadastro-footer a {
-            color: #1e3c72;
+            color: #6a70f8;
             text-decoration: none;
             font-weight: bold;
         }
