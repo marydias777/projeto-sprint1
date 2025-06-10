@@ -95,7 +95,7 @@
     border-color:#003b8b; /* Borda branca para o botão Sair */
     color:#003b8b; /* Texto branco */
 }
-
+ 
 .btn-outline-danger:hover {
     background-color: #003b8b; /* Fundo branco ao passar o mouse */
     color: #dc3545; /* Cor do texto ao hover (vermelho Bootstrap danger) */
